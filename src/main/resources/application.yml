@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: config-server
+  config:
+    activate:
+      on-profile:
+      - cloud
+  cloud:
+    config:
+      server:
+        bootstrap: false  # explicitly if you want to set it as false
+        
+        git:
+          uri: ${vcap.service.${config-server-name}.credentials.github-url}
+          search-paths:
+          - '*'
+          clone-on-start: false
+          default-label: master
+          ignore-local-ssh-settings: true
+          skip-ssl-validation: true
+          strictHostKeyChecking: false
+          preferred-authentications: 'publickey'
+          passphrase: ''
+          private-key: ${vcap.service.${config-server-name}.credentials.github-key}
+        health:
+          down-health-status: 
+
+health:
+  config:
+    time-to-live: 1
+
+            
